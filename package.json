@@ -1,0 +1,16 @@
+{
+  "name": "teachers-day-escape",
+  "version": "2.0.0",
+  "private": true,
+  "description": "時光黑板上的神秘留信：教師節國語×數學解謎遊戲（手機版）",
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "test": "npm run test:unit && npm run test:e2e",
+    "test:unit": "node --test --experimental-test-coverage --test-coverage-include=public/logic.js tests/unit/*.test.js",
+    "test:e2e": "playwright test",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1"
+  }
+}

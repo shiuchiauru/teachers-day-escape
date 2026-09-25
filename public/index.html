@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1d3629">
+<title>時光黑板上的神秘留信｜教師節解謎</title>
+<meta name="description" content="教師節國語×數學解謎遊戲：解開四道關卡，集齊智、仁、勇、德四把鑰匙，打開時光寶盒寫謝師卡。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Iansui&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --board:#1d3629; --board-deep:#152a1f; --chalk:#f4f1e8; --chalk-dim:#c3cfc6; --chalk-soft:#dbe3dd;
+  --line:rgba(244,241,232,.3); --line-faint:rgba(244,241,232,.18);
+  --yellow:#f2d479; --yellow-shadow:#b8952f; --pink:#f4a9a0; --blue:#9fd0ea; --green:#b9e3a6;
+  --wood:#6b4428; --wood-edge:#8b5e3c; --paper:#f7f1e1; --ink:#2b2a26; --brown:#7a5134; --bad:#ffb4a8;
+  --hand:"Iansui","Noto Sans TC",serif; --sans:"Noto Sans TC",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+h1[tabindex="-1"]:focus{outline:none}
+html,body{margin:0;height:100%}
+body{background:#12231a;color:var(--chalk);font-family:var(--sans);-webkit-tap-highlight-color:transparent}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.app{max-width:480px;min-height:100dvh;margin:0 auto;background:var(--board);display:flex;flex-direction:column;position:relative;overflow:hidden}
+.screen{display:none;flex:1;flex-direction:column;min-height:100dvh}
+.screen.active{display:flex}
+.board{flex:1;padding:20px 16px 16px;display:flex;flex-direction:column;gap:14px;overflow-y:auto}
+.tray{background:var(--wood);border-top:6px solid var(--wood-edge);padding:14px 16px calc(22px + env(safe-area-inset-bottom));display:flex;gap:10px;position:sticky;bottom:0}
+.btn-primary{flex:1;min-height:56px;border-radius:14px;border:none;background:var(--yellow);color:var(--board);font-size:19px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 0 var(--yellow-shadow);text-decoration:none}
+.btn-primary:active{transform:translateY(3px);box-shadow:0 1px 0 var(--yellow-shadow)}
+.btn-secondary{min-width:104px;min-height:56px;padding:0 12px;border-radius:14px;border:2px solid #e9dcc7;background:rgba(0,0,0,.15);color:#fbf6ec;font-size:17px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.round-btn{width:44px;height:44px;border-radius:22px;border:2px solid var(--line);background:transparent;display:flex;align-items:center;justify-content:center;color:var(--chalk)}
+.keys{display:flex;gap:8px}
+.key{width:36px;height:36px;border-radius:18px;border:2px solid var(--line-faint);display:flex;align-items:center;justify-content:center;font-family:var(--hand);font-size:18px;color:rgba(244,241,232,.35)}
+.key.current{border-style:dashed;border-color:var(--c);color:var(--c)}
+.key.done{background:var(--c);border-color:var(--c);color:var(--board)}
+.eyebrow{font-size:14px;font-weight:700}
+h1,h2{margin:0;font-family:var(--hand);font-weight:400}
+.title{font-size:32px}
+.lead{margin:0;font-size:15px;line-height:1.6;color:var(--chalk-dim)}
+.card-dash{border:2px dashed var(--line);border-radius:14px;padding:12px}
+.tag{flex-shrink:0;font-size:12px;font-weight:700;color:var(--board);background:var(--chalk);padding:2px 8px;border-radius:6px}
+.num-input{height:50px;border-radius:12px;border:2px solid var(--line);background:var(--board-deep);color:var(--chalk);text-align:center;font-size:22px;font-weight:700;width:72px;-moz-appearance:textfield}
+.num-input::-webkit-outer-spin-button,.num-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.feedback{min-height:24px;font-size:15px;font-weight:700;color:var(--bad);text-align:center}
+.shake{animation:shake .4s}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+
+/* 開場 */
+.date-chip{font-size:14px;font-weight:500;color:var(--board);background:var(--yellow);padding:6px 12px;border-radius:999px}
+.letter{background:var(--paper);color:var(--ink);border-radius:6px;padding:20px;transform:rotate(-1.2deg);box-shadow:0 10px 24px rgba(0,0,0,.35);font-family:var(--hand);font-size:20px;line-height:1.7}
+.big-keys{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;text-align:center}
+.big-key{width:60px;height:60px;margin:0 auto 6px;border-radius:30px;border:2px dashed var(--c);display:flex;align-items:center;justify-content:center;font-family:var(--hand);font-size:28px;color:var(--c)}
+.steps{display:flex;flex-direction:column;gap:8px;font-size:15px;line-height:1.6;color:var(--chalk-soft);margin:0;padding:0;list-style:none}
+.steps li{display:flex;gap:10px;align-items:flex-start}
+.steps b{flex-shrink:0;width:24px;height:24px;border-radius:12px;background:rgba(244,241,232,.14);display:flex;align-items:center;justify-content:center;font-size:13px}
+
+/* 第 1 關 */
+.riddle-q{font-family:var(--hand);font-size:19px;line-height:1.35}
+.opt-row{display:flex;gap:8px;align-items:center;margin-top:10px}
+.opt{flex:1 1 0;height:54px;border-radius:12px;border:2px solid var(--line);background:rgba(244,241,232,.06);font-family:var(--hand);font-size:26px;color:var(--chalk)}
+.opt[aria-pressed="true"]{background:var(--yellow);border-color:var(--yellow);color:var(--board)}
+.stroke{display:flex;align-items:center;gap:2px;font-size:13px;color:var(--chalk-dim);flex-shrink:0}
+.stroke .num-input{width:46px;font-size:20px}
+.sum-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-radius:14px;background:var(--board-deep);font-size:16px;font-weight:700}
+
+/* 第 2 關 */
+.clue{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;border:2px dashed var(--line)}
+.eq{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--hand);font-size:22px}
+.tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tool{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 6px;border-radius:12px;background:var(--board-deep);font-size:14px;color:var(--chalk-soft)}
+.tool .num-input{background:var(--board)}
+.final-calc{display:flex;flex-direction:column;gap:8px;padding:12px 14px;border-radius:14px;border:2px solid var(--pink)}
+
+/* 第 3 關 */
+.idioms{display:flex;flex-direction:column;gap:10px;padding:14px 12px;border-radius:16px;border:2px dashed var(--line)}
+.idiom{display:flex;align-items:center;gap:12px}
+.idiom-no{width:24px;height:24px;border-radius:12px;background:rgba(244,241,232,.14);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.cells{flex:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.cell{height:56px;border-radius:10px;background:rgba(244,241,232,.06);display:flex;align-items:center;justify-content:center;font-family:var(--hand);font-size:30px}
+.slot{border:2px dashed var(--blue);background:rgba(159,208,234,.08);color:var(--blue);font-family:var(--sans);font-size:22px;font-weight:700}
+.slot.filled{border:none;background:var(--blue);color:var(--board);font-family:var(--hand);font-size:30px}
+.tiles{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.tile{height:54px;border-radius:12px;border:none;background:var(--chalk);color:var(--board);font-family:var(--hand);font-size:28px;box-shadow:0 4px 0 #b9b2a0}
+.tile:disabled{background:transparent;border:2px dashed rgba(244,241,232,.2);color:rgba(244,241,232,.3);box-shadow:none;cursor:default}
+.idioms.glow{border-color:var(--blue);box-shadow:0 0 24px rgba(159,208,234,.45)}
+
+/* 第 4 關 */
+.clock-row{display:flex;align-items:center;gap:14px}
+.clock-row svg{width:176px;height:176px;flex-shrink:0}
+.hand{transition:transform .25s ease;transform-origin:100px 100px}
+.time-text{font-size:40px;font-weight:700;letter-spacing:1px;font-variant-numeric:tabular-nums}
+.ok-chip{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:var(--board);background:var(--green);padding:6px 10px;border-radius:999px}
+.steppers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.stepper{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 6px;border-radius:12px;background:var(--board-deep);font-size:13px;color:var(--chalk-soft)}
+.stepper div{display:flex;gap:6px}
+.step{width:46px;height:46px;border-radius:10px;border:2px solid var(--line);background:transparent;font-size:24px;font-weight:700;color:var(--chalk)}
+.step.plus{border:none;background:var(--chalk);color:var(--board)}
+.question{display:flex;flex-direction:column;gap:10px;padding:12px 14px;border-radius:14px;border:2px solid var(--green);font-size:16px;line-height:1.6}
+
+/* 結局 */
+.postcard{background:var(--paper);color:var(--ink);border-radius:10px;padding:16px 18px;border:6px solid var(--yellow);box-shadow:0 10px 24px rgba(0,0,0,.35);display:flex;flex-direction:column;gap:8px;font-family:var(--hand)}
+.postcard .to,.postcard .from{font-size:20px;color:var(--brown)}
+.postcard .from{text-align:right;font-size:18px}
+.postcard .msg{font-size:18px;line-height:1.7;white-space:pre-line;word-break:break-word}
+.field{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--chalk-dim)}
+.field input,.field textarea{min-height:46px;border-radius:10px;border:2px solid var(--line);background:var(--board-deep);color:var(--chalk);padding:10px 12px;font-size:16px;line-height:1.5;resize:none}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+
+/* 覆蓋層 */
+.overlay{position:fixed;inset:0;background:rgba(10,20,14,.72);display:none;align-items:flex-end;justify-content:center;z-index:10}
+.overlay.open{display:flex}
+.sheet{width:100%;max-width:480px;background:var(--paper);color:var(--ink);border-radius:20px 20px 0 0;padding:20px 20px calc(24px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px;animation:up .25s ease}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+.sheet h2{font-size:24px;color:var(--brown)}
+.hint-list{margin:0;padding-left:22px;font-size:17px;line-height:1.7}
+.sheet-actions{display:flex;gap:10px}
+.sheet .btn-secondary{color:var(--ink);border-color:#cdbfa6;background:transparent}
+.reward{align-items:center}
+.reward-box{margin:auto 24px;background:var(--board);border:2px dashed var(--line);border-radius:20px;padding:28px 20px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;width:100%;max-width:360px;animation:pop .35s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{transform:scale(.7);opacity:0}}
+.reward-key{width:96px;height:96px;border-radius:48px;background:var(--c);color:var(--board);display:flex;align-items:center;justify-content:center;font-family:var(--hand);font-size:52px;animation:spin .6s ease}
+@keyframes spin{from{transform:rotate(-200deg) scale(.4)}}
+.toast{position:fixed;left:50%;bottom:120px;transform:translateX(-50%);background:var(--paper);color:var(--ink);padding:10px 16px;border-radius:999px;font-weight:700;font-size:15px;z-index:20;display:none}
+.toast.show{display:block}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="app">
+
+<!-- 開場 -->
+<section class="screen active" id="intro" aria-labelledby="intro-title">
+  <div class="board" style="padding-top:28px;gap:20px">
+    <div class="topbar">
+      <span class="date-chip">9 月 28 日 · 教師節</span>
+      <span style="font-family:var(--hand);font-size:16px;color:var(--chalk-dim)">國語 × 數學 解謎</span>
+    </div>
+    <h1 id="intro-title" style="font-size:40px;line-height:1.2">時光黑板上的<br><span style="color:var(--yellow)">神秘留信</span></h1>
+    <div class="letter">親愛的同學們，在今天這個屬於師生的特別日子，我在講台下的「時光寶盒」裡留了神秘驚喜！
+      <div style="text-align:right;font-size:18px;color:var(--brown);margin-top:8px">—— 你們的老師</div>
+    </div>
+    <div>
+      <div style="font-size:15px;font-weight:700;margin-bottom:10px">集齊四把鑰匙，打開寶盒</div>
+      <div class="big-keys" id="bigKeys"></div>
+    </div>
+    <ol class="steps">
+      <li><b>1</b><span>一共 4 關，每過一關拿到一把鑰匙。</span></li>
+      <li><b>2</b><span>卡住了？每關都可以按「提示」。</span></li>
+      <li><b>3</b><span>最後可以做一張謝師卡送給老師！</span></li>
+    </ol>
+  </div>
+  <div class="tray" style="flex-direction:column">
+    <button class="btn-primary" id="startBtn" data-testid="start">開始解謎
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    <button class="btn-secondary" id="resetBtn" hidden style="width:100%">從頭開始</button>
+  </div>
+</section>
+
+<!-- 第 1 關 -->
+<section class="screen" id="s1" aria-labelledby="s1-title">
+  <div class="board">
+    <div class="topbar"><button class="round-btn" data-back aria-label="回到開場"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button><div class="keys" data-keys></div></div>
+    <div><div class="eyebrow" style="color:var(--yellow)">第 1 關 · 智之鑰</div><h1 class="title" id="s1-title">三道字謎</h1><p class="lead">先選出每題藏著的字，再數一數它有幾畫。</p></div>
+    <div id="riddles" style="display:flex;flex-direction:column;gap:10px"></div>
+    <label class="sum-row"><span>三個字的筆畫加起來 ＝</span><input class="num-input" id="s1code" data-testid="s1-code" type="text" inputmode="numeric" autocomplete="off" placeholder="密碼" style="width:96px;border-color:var(--yellow);color:var(--yellow);background:var(--board)"></label>
+    <div class="feedback" role="status" aria-live="polite" data-feedback></div>
+  </div>
+  <div class="tray"><button class="btn-secondary" data-hint><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/></svg>提示</button><button class="btn-primary" data-check data-testid="s1-check"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="14" r="4"/><path d="M11 11l9-9M17 5l2 2M15 7l2 2"/></svg>驗證解鎖</button></div>
+</section>
+
+<!-- 第 2 關 -->
+<section class="screen" id="s2" aria-labelledby="s2-title">
+  <div class="board">
+    <div class="topbar"><button class="round-btn" data-back aria-label="回到開場"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button><div class="keys" data-keys></div></div>
+    <div><div class="eyebrow" style="color:var(--pink)">第 2 關 · 仁之鑰</div><h1 class="title" id="s2-title">講台上的天平</h1><p class="lead">看懂 3 條線索，推算每樣教具代表的數字。</p></div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="clue"><span class="tag">線索 1</span><div class="eq"><svg width="30" height="30" data-icon="chalk"></svg><span>＋</span><svg width="30" height="30" data-icon="globe"></svg><span>＝ 12</span></div></div>
+      <div class="clue"><span class="tag">線索 2</span><div class="eq"><svg width="30" height="30" data-icon="chalk"></svg><span>－</span><svg width="30" height="30" data-icon="globe"></svg><span>＝ 4</span></div></div>
+      <div class="clue"><span class="tag">線索 3</span><div class="eq"><svg width="30" height="30" data-icon="ruler"></svg><span>＝</span><svg width="30" height="30" data-icon="globe"></svg><span>× 3</span></div></div>
+    </div>
+    <div class="tools">
+      <label class="tool"><svg width="28" height="28" data-icon="chalk"></svg>粉筆盒<input class="num-input" id="s2chalk" data-testid="s2-chalk" type="text" inputmode="numeric" autocomplete="off" placeholder="?"></label>
+      <label class="tool"><svg width="28" height="28" data-icon="globe"></svg>地球儀<input class="num-input" id="s2globe" data-testid="s2-globe" type="text" inputmode="numeric" autocomplete="off" placeholder="?"></label>
+      <label class="tool"><svg width="28" height="28" data-icon="ruler"></svg>三角尺<input class="num-input" id="s2ruler" data-testid="s2-ruler" type="text" inputmode="numeric" autocomplete="off" placeholder="?"></label>
+    </div>
+    <label class="final-calc"><span style="font-size:14px;font-weight:700;color:var(--pink)">最後一步：算出開鎖密碼</span>
+      <span style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font-family:var(--hand);font-size:17px">（粉筆盒＋三角尺）× 地球儀 ＝</span><input class="num-input" id="s2code" data-testid="s2-code" type="text" inputmode="numeric" autocomplete="off" placeholder="密碼" style="width:84px;border-color:var(--pink);color:var(--pink)"></span></label>
+    <div class="feedback" role="status" aria-live="polite" data-feedback></div>
+  </div>
+  <div class="tray"><button class="btn-secondary" data-hint><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/></svg>提示</button><button class="btn-primary" data-check data-testid="s2-check"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="14" r="4"/><path d="M11 11l9-9M17 5l2 2M15 7l2 2"/></svg>開鎖</button></div>
+</section>
+
+<!-- 第 3 關 -->
+<section class="screen" id="s3" aria-labelledby="s3-title">
+  <div class="board">
+    <div class="topbar"><button class="round-btn" data-back aria-label="回到開場"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button><div class="keys" data-keys></div></div>
+    <div><div class="eyebrow" style="color:var(--blue)">第 3 關 · 勇之鑰</div><h1 class="title" id="s3-title">敬師成語法陣</h1><p class="lead">點下方的字塊，把 4 句敬師成語補完整。點錯了？點格子就能拿回來。</p></div>
+    <div class="idioms" id="idioms"></div>
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px"><span style="font-size:15px;font-weight:700">字塊</span><span style="font-size:14px;color:var(--chalk-dim)">已填 <span id="filledCount">0</span> / 4</span></div>
+      <div class="tiles" id="tiles"></div>
+    </div>
+    <div class="feedback" role="status" aria-live="polite" data-feedback></div>
+  </div>
+  <div class="tray"><button class="btn-secondary" data-hint><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/></svg>提示</button><button class="btn-primary" data-check data-testid="s3-check"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.6 6.6L21 9.3l-5 4.4 1.6 6.8L12 17l-5.6 3.5L8 13.7 3 9.3l6.4-.7z"/></svg>啟動法陣解鎖</button></div>
+</section>
+
+<!-- 第 4 關 -->
+<section class="screen" id="s4" aria-labelledby="s4-title">
+  <div class="board">
+    <div class="topbar"><button class="round-btn" data-back aria-label="回到開場"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button><div class="keys" data-keys></div></div>
+    <div><div class="eyebrow" style="color:var(--green)">第 4 關 · 德之鑰</div><h1 class="title" id="s4-title">時光時鐘</h1><p class="lead">教師節是 9 月 28 日。把時鐘撥到「9 點 28 分」，再回答下面的問題。</p></div>
+    <div class="clock-row">
+      <svg viewBox="0 0 200 200" role="img" id="clock" aria-label="時鐘">
+        <circle cx="100" cy="100" r="94" fill="#152a1f" stroke="#f4f1e8" stroke-width="3"/>
+        <g stroke="#f4f1e8" stroke-linecap="round" id="ticks"></g>
+        <g fill="#f4f1e8" font-family="Iansui, serif" font-size="20" text-anchor="middle"><text x="100" y="50">12</text><text x="158" y="107">3</text><text x="100" y="164">6</text><text x="42" y="107">9</text></g>
+        <line class="hand" id="hourHand" x1="100" y1="100" x2="100" y2="56" stroke="#f2d479" stroke-width="7" stroke-linecap="round"/>
+        <line class="hand" id="minHand" x1="100" y1="100" x2="100" y2="26" stroke="#b9e3a6" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="100" cy="100" r="6" fill="#f4f1e8"/>
+      </svg>
+      <div style="display:flex;flex-direction:column;gap:8px;flex:1">
+        <span style="font-size:13px;color:var(--chalk-dim)">現在時間</span>
+        <span class="time-text" id="timeText" data-testid="s4-time">09:00</span>
+        <span id="timeStatus" style="font-size:14px;color:var(--chalk-dim)">目標：<b style="color:var(--green)">09:28</b></span>
+      </div>
+    </div>
+    <div class="steppers">
+      <div class="stepper">時<div><button class="step" data-step="h,-1" aria-label="時針減 1">−</button><button class="step plus" data-step="h,1" aria-label="時針加 1" data-testid="h-plus">＋</button></div></div>
+      <div class="stepper">分（5 分）<div><button class="step" data-step="m,-5" aria-label="分針減 5">−</button><button class="step plus" data-step="m,5" aria-label="分針加 5" data-testid="m5-plus">＋</button></div></div>
+      <div class="stepper">分（1 分）<div><button class="step" data-step="m,-1" aria-label="分針減 1">−</button><button class="step plus" data-step="m,1" aria-label="分針加 1" data-testid="m1-plus">＋</button></div></div>
+    </div>
+    <label class="question"><span>9 點整的時候，時針和分針之間較小的夾角是幾度？</span>
+      <span style="display:flex;align-items:center;gap:8px"><input class="num-input" id="s4angle" data-testid="s4-angle" type="text" inputmode="numeric" autocomplete="off" placeholder="?" style="width:96px;border-color:var(--green);color:var(--green)"><b style="font-size:18px">度</b></span></label>
+    <div class="feedback" role="status" aria-live="polite" data-feedback></div>
+  </div>
+  <div class="tray"><button class="btn-secondary" data-hint><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/></svg>提示</button><button class="btn-primary" data-check data-testid="s4-check"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="10" width="18" height="11" rx="2"/><path d="M3 10l2-5h14l2 5M12 14v3"/></svg>開啟時光寶盒</button></div>
+</section>
+
+<!-- 時光寶盒 -->
+<section class="screen" id="final" aria-labelledby="final-title">
+  <div class="board" style="gap:12px">
+    <div class="topbar"><div class="keys" data-keys></div>
+      <button class="round-btn" id="restartBtn" style="width:auto;padding:0 14px;gap:6px;font-size:15px" data-testid="restart"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></svg>重新挑戰</button></div>
+    <div><h1 id="final-title" style="font-size:30px;color:var(--yellow)">時光寶盒打開了！</h1>
+      <p class="lead" style="color:var(--chalk-soft)">恭喜你集齊【智、仁、勇、德】四把鑰匙，成為尊師解謎大師！寫一張卡片，把謝謝送給老師吧。</p></div>
+    <div class="postcard" data-testid="postcard">
+      <div class="to">親愛的 <span id="pvTeacher">老師</span>：</div>
+      <div class="msg" id="pvMsg"></div>
+      <div class="from">—— <span id="pvStudent">學生</span> 敬上</div>
+    </div>
+    <div class="two">
+      <label class="field">老師<input id="inTeacher" maxlength="12" placeholder="例：王老師" data-testid="in-teacher"></label>
+      <label class="field">我的名字<input id="inStudent" maxlength="12" placeholder="你的名字" data-testid="in-student"></label>
+    </div>
+    <label class="field">想對老師說的話<textarea id="inMsg" rows="2" maxlength="80" placeholder="謝謝老師春風化雨、悉心教導！祝您教師節快樂，天天順心！"></textarea></label>
+  </div>
+  <div class="tray"><button class="btn-secondary" id="shareBtn" style="min-width:132px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 6 0l3-3a4 4 0 0 0-6-6l-1 1M14 10a4 4 0 0 0-6 0l-3 3a4 4 0 0 0 6 6l1-1"/></svg>分享遊戲</button><button class="btn-primary" id="downloadBtn" data-testid="download"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>下載卡片</button></div>
+</section>
+
+<!-- 提示 -->
+<div class="overlay" id="hintOverlay" role="dialog" aria-modal="true" aria-labelledby="hint-title">
+  <div class="sheet">
+    <h2 id="hint-title">提示</h2>
+    <ol class="hint-list" id="hintList" data-testid="hint-list"></ol>
+    <div class="sheet-actions"><button class="btn-secondary" id="hintClose">關閉</button><button class="btn-primary" id="hintMore">再給一個提示</button></div>
+  </div>
+</div>
+
+<!-- 拿到鑰匙 -->
+<div class="overlay reward" id="rewardOverlay" role="dialog" aria-modal="true" aria-labelledby="reward-title">
+  <div class="reward-box">
+    <div class="reward-key" id="rewardKey">智</div>
+    <h2 id="reward-title" style="font-size:26px">拿到鑰匙了！</h2>
+    <p class="lead" id="rewardMsg" style="color:var(--chalk-soft)"></p>
+    <button class="btn-primary" id="rewardNext" style="width:100%" data-testid="reward-next">下一關</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+</main>
+
+<script src="./logic.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>
