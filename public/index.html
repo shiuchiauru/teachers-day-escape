@@ -50,6 +50,7 @@ h1,h2{margin:0;font-family:var(--hand);font-weight:400}
 .feedback{min-height:24px;font-size:15px;font-weight:700;color:var(--bad);text-align:center}
 .shake{animation:shake .4s}
 @keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.credit{font-size:12px;color:var(--chalk-dim);text-align:center;letter-spacing:.5px;opacity:.75;padding:6px 0 2px}
 
 /* 開場 */
 .date-chip{font-size:14px;font-weight:500;color:var(--board);background:var(--yellow);padding:6px 12px;border-radius:999px}
@@ -154,6 +155,7 @@ h1,h2{margin:0;font-family:var(--hand);font-weight:400}
       <li><b>2</b><span>卡住了？每關都可以按「提示」。</span></li>
       <li><b>3</b><span>最後可以做一張謝師卡送給老師！</span></li>
     </ol>
+    <div class="credit">國小教材／巧茹老師製作</div>
   </div>
   <div class="tray" style="flex-direction:column">
     <button class="btn-primary" id="startBtn" data-testid="start">開始解謎
@@ -170,6 +172,7 @@ h1,h2{margin:0;font-family:var(--hand);font-weight:400}
     <div id="riddles" style="display:flex;flex-direction:column;gap:10px"></div>
     <label class="sum-row"><span>三個字的筆畫加起來 ＝</span><input class="num-input" id="s1code" data-testid="s1-code" type="text" inputmode="numeric" autocomplete="off" placeholder="密碼" style="width:96px;border-color:var(--yellow);color:var(--yellow);background:var(--board)"></label>
     <div class="feedback" role="status" aria-live="polite" data-feedback></div>
+    <div class="credit">國小教材／巧茹老師製作</div>
   </div>
   <div class="tray"><button class="btn-secondary" data-hint><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/></svg>提示</button><button class="btn-primary" data-check data-testid="s1-check"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="14" r="4"/><path d="M11 11l9-9M17 5l2 2M15 7l2 2"/></svg>驗證解鎖</button></div>
 </section>
@@ -192,6 +195,7 @@ h1,h2{margin:0;font-family:var(--hand);font-weight:400}
     <label class="final-calc"><span style="font-size:14px;font-weight:700;color:var(--pink)">最後一步：算出開鎖密碼</span>
       <span style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font-family:var(--hand);font-size:17px">（粉筆盒＋三角尺）× 地球儀 ＝</span><input class="num-input" id="s2code" data-testid="s2-code" type="text" inputmode="numeric" autocomplete="off" placeholder="密碼" style="width:84px;border-color:var(--pink);color:var(--pink)"></span></label>
     <div class="feedback" role="status" aria-live="polite" data-feedback></div>
+    <div class="credit">國小教材／巧茹老師製作</div>
   </div>
   <div class="tray"><button class="btn-secondary" data-hint><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/></svg>提示</button><button class="btn-primary" data-check data-testid="s2-check"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="14" r="4"/><path d="M11 11l9-9M17 5l2 2M15 7l2 2"/></svg>開鎖</button></div>
 </section>
@@ -207,6 +211,7 @@ h1,h2{margin:0;font-family:var(--hand);font-weight:400}
       <div class="tiles" id="tiles"></div>
     </div>
     <div class="feedback" role="status" aria-live="polite" data-feedback></div>
+    <div class="credit">國小教材／巧茹老師製作</div>
   </div>
   <div class="tray"><button class="btn-secondary" data-hint><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/></svg>提示</button><button class="btn-primary" data-check data-testid="s3-check"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.6 6.6L21 9.3l-5 4.4 1.6 6.8L12 17l-5.6 3.5L8 13.7 3 9.3l6.4-.7z"/></svg>啟動法陣解鎖</button></div>
 </section>
@@ -239,6 +244,7 @@ h1,h2{margin:0;font-family:var(--hand);font-weight:400}
     <label class="question"><span>9 點整的時候，時針和分針之間較小的夾角是幾度？</span>
       <span style="display:flex;align-items:center;gap:8px"><input class="num-input" id="s4angle" data-testid="s4-angle" type="text" inputmode="numeric" autocomplete="off" placeholder="?" style="width:96px;border-color:var(--green);color:var(--green)"><b style="font-size:18px">度</b></span></label>
     <div class="feedback" role="status" aria-live="polite" data-feedback></div>
+    <div class="credit">國小教材／巧茹老師製作</div>
   </div>
   <div class="tray"><button class="btn-secondary" data-hint><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/></svg>提示</button><button class="btn-primary" data-check data-testid="s4-check"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="10" width="18" height="11" rx="2"/><path d="M3 10l2-5h14l2 5M12 14v3"/></svg>開啟時光寶盒</button></div>
 </section>
@@ -260,6 +266,7 @@ h1,h2{margin:0;font-family:var(--hand);font-weight:400}
       <label class="field">我的名字<input id="inStudent" maxlength="12" placeholder="你的名字" data-testid="in-student"></label>
     </div>
     <label class="field">想對老師說的話<textarea id="inMsg" rows="2" maxlength="80" placeholder="謝謝老師春風化雨、悉心教導！祝您教師節快樂，天天順心！"></textarea></label>
+    <div class="credit">國小教材／巧茹老師製作</div>
   </div>
   <div class="tray"><button class="btn-secondary" id="shareBtn" style="min-width:132px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 6 0l3-3a4 4 0 0 0-6-6l-1 1M14 10a4 4 0 0 0-6 0l-3 3a4 4 0 0 0 6 6l1-1"/></svg>分享遊戲</button><button class="btn-primary" id="downloadBtn" data-testid="download"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>下載卡片</button></div>
 </section>

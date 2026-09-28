@@ -287,7 +287,7 @@
     x.textAlign = 'right'; x.fillStyle = '#7a5134'; x.font = '50px ' + hand;
     x.fillText('—— ' + d.student + ' 敬上', px + pw - 60, py + ph - 70);
     x.textAlign = 'center'; x.fillStyle = '#fbf6ec'; x.font = '32px ' + hand;
-    x.fillText('時光黑板上的神秘留信 · 尊師解謎大師', W / 2, H - 42);
+    x.fillText('時光黑板上的神秘留信 · 國小教材／巧茹老師製作', W / 2, H - 42);
     return c;
   }
 
